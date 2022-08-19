@@ -2,6 +2,7 @@
 
 ROOT_PART=/dev/sda3
 EFI_PART=/dev/sda1
+#SWAP_PART=/dev/sda4
 
 mount ${ROOT_PART} /mnt
 
@@ -131,6 +132,7 @@ packages=(
 	"thunar-volman"
 	"thunderbird"
 	"tumbler"
+	"unzip"
 	"udiskie"
 	"vim"
 	"wget"
