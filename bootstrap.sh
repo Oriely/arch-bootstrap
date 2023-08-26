@@ -13,26 +13,27 @@ if [[ -n ${EFI_PART} ]]; then
 	mount ${EFI_PART} /mnt/boot
 fi
 
-linux_packages=(
+kernel_packages=(
 	"base"
 	"linux"
+	"linux-lts"
 	"linux-firmware"
 	"linux-headers"
-
 )
 
 desktop_environment=(
-	"light-locker"
-	"lightdm"
-	"lightdm-gtk-greeter"
-	"lightdm-webkit2-greeter"
-	"i3-gaps"
+#	"light-locker"
+#	"lightdm"
+#	"lightdm-gtk-greeter"
+#	"lightdm-webkit2-greeter"
+#	"i3-gaps"
+#	"gnome"
+#	"plasma"
 )
 
 network=(
-	"network-manager-applet"
+#	"network-manager-applet"
 	"networkmanager"
-	"dhcpcd"
 )
 
 font_packages=(
@@ -46,7 +47,7 @@ font_packages=(
 
 bootloaders=(
 	#"grub"
-	"refind"
+	#"refind"
 )
 
 nvidia_graphics=(
@@ -64,23 +65,36 @@ amd_graphics=(
 	"libva-mesa-driver"
 )
 
+shell_packages=(
+	"nano"
+	"ncmpcpp"
+	"cmatrix"
+	"htop"
+	"zsh"
+	"zsh-completions"
+	"vim"
+	"wget"
+	"which"
+	"calc"
+	"ranger"
+)
+
+programming_packages=(
+	"nodejs"
+	"npm"
+	"docker"
+	"docker-compose"
+)
+
 packages=(
 	"alacritty"
 	"arandr"
-	"blueberry"
 	"bluez"
 	"bluez-utils"
-	"calc"
-	"cmatrix"
 	"code"
-	"conky"
-	"conky-manager"
 	"discord"
-	"docker"
-	"docker-compose"
 	"dunst"
 	"easyeffects"
-	"feh"
 	"firefox"
 	"flameshot"
 	"flatpak"
@@ -88,36 +102,18 @@ packages=(
 	"font-manager"
 	"gimp"
 	"git"
-	"gnome-keyring"
-	"gparted"
 	"gperftools"
 	"gucharmap"
 	"gzip"
-	"htop"
-	"jre17-openjdk-headless"
-	"jre8-openjdk-headless"
 	"keepassxc"
-	"libreoffice-still"
-	"lxappearance-gtk3"
-	"mopidy"
-	"mpd"
-	"nano"
-	"ncmpcpp"
-
-	"nodejs"
-	"npm"
 	"ntfs-3g"
-
 	"onboard"
-	"openresolv"
-	"pavucontrol"
 	"picom"
 	"pipewire"
 	"pipewire-jack"
 	"pipewire-pulse"
 	"polybar"
 	"python-pywal"
-	"ranger"
 	"refind"
 	"retroarch"
 	"rofi"
@@ -127,26 +123,16 @@ packages=(
 	"solaar"
 	"spotifyd"
 	"sudo"
-	"thunar"
-	"thunar-archive-plugin"
-	"thunar-volman"
 	"thunderbird"
-	"tumbler"
 	"unzip"
 	"udiskie"
-	"vim"
-	"wget"
-	"which"
 	"wmctrl"
-	"xarchiver"
 	"xdotool"
-	"xfce4-power-manager"
 	"wireplumber"
 	"xorg-xev"
 	"xorg-xrdb"
 	"xorg-xwininfo"
 	"yt-dlp"
-	"zsh"
 )
 
 all_packages=(
@@ -154,6 +140,8 @@ all_packages=(
 	${nvidia_graphics[@]}
 	#${amd_graphics[@]}
 	${bootloaders[@]}
+	${shell_packages[@]}
+	${programming_packages[@]}
 	${network[@]}
 	${packages[@]}
 	${font_packages[@]}
@@ -161,12 +149,14 @@ all_packages=(
 )
 
 
+
+# enable multilib in install medium
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+pacman -Syy
+
 # install base and linux kernel packages
 pacstrap /mnt base base-devel ${all_packages[@]}
 
-# Enable multilib
-
-timedatectl set-ntp true
 
 pacstrap /mnt ${all_packages[@]}
 

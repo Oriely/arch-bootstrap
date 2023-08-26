@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-
+REPO=https://github.com/Oriely/dotfiles.git
 DOTFILES="$HOME/.dotfiles"
 
 dotcfg () {

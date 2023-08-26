@@ -19,6 +19,10 @@ ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 hwclock --systohc
 systemctl enable systemd-timesyncd
 
+
+timedatectl set-ntp true
+
+
 # hostname
 echo $HOSTNAME > /etc/hostname
 echo -e '127.0.0.1\tlocalhost' >>/etc/hosts
@@ -43,6 +47,8 @@ fi
 
 # sudo
 sed -i 's/# \(%wheel ALL=(ALL) ALL\)/\1/' /etc/sudoers
+
+
 
 useradd -mG wheel,storage,power,video,audio $USER
 echo "$USER:$PASS" | chpasswd
